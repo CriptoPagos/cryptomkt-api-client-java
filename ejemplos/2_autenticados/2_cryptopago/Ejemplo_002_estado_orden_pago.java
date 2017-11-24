@@ -18,17 +18,19 @@
  */
 
 /**
- * @example Ejemplo_006_balance.java
- * Ejemplo para obtener el balance de las billeteras de un usuario
- * @link https://developers.cryptomkt.com/es/#obtener-balance
+ * @example Ejemplo_002_estado_orden_pago.java
+ * Ejemplo para obtener el estado de una orden de pago
+ * @link https://developers.cryptomkt.com/es/#estado-de-orden-de-pago
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]sasco.cl)
  * @version 2017-11-24
  */
 
+
 import cl.criptopagos.cryptomkt.Client;
+import cl.criptopagos.cryptomkt.PaymentOrder;
 import cl.criptopagos.cryptomkt.ClientException;
 
-public class Ejemplo_006_balance {
+public class Ejemplo_002_estado_orden_pago {
 
 	public static void main(String[] args) {
 
@@ -39,9 +41,10 @@ public class Ejemplo_006_balance {
 		// crear cliente
 		Client Client = new Client(api_key, api_secret);
 
-		// obtener el balance de las billeteras
+		// obtener estado de la orden de pago
 		try {
-			System.out.println(Client.getBalance());
+			PaymentOrder PaymentOrder = Client.getPaymentOrder("P14155");
+			System.out.println(PaymentOrder.getPaymentUrl());
 		} catch (ClientException e) {
 			System.out.println(e.getMessage());
 		}

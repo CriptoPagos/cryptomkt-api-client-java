@@ -18,17 +18,19 @@
  */
 
 /**
- * @example Ejemplo_006_balance.java
- * Ejemplo para obtener el balance de las billeteras de un usuario
- * @link https://developers.cryptomkt.com/es/#obtener-balance
+ * @example Ejemplo_001_crear_orden_pago.java
+ * Ejemplo para crear una orden de pago
+ * @link https://developers.cryptomkt.com/es/#crear-orden-de-pago
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]sasco.cl)
  * @version 2017-11-24
  */
 
+
 import cl.criptopagos.cryptomkt.Client;
+import cl.criptopagos.cryptomkt.PaymentOrder;
 import cl.criptopagos.cryptomkt.ClientException;
 
-public class Ejemplo_006_balance {
+public class Ejemplo_001_crear_orden_pago {
 
 	public static void main(String[] args) {
 
@@ -39,9 +41,21 @@ public class Ejemplo_006_balance {
 		// crear cliente
 		Client Client = new Client(api_key, api_secret);
 
-		// obtener el balance de las billeteras
+		// crear orden de pago
+		// Client.createPaymentOrder() modifica PaymentOrder asignando la respuesta con los datos de la orden
+		// también lo retorna, pero como lo modifica directamente, no sería necesario ocupar lo retornado
+		PaymentOrder PaymentOrder = new PaymentOrder();
+		PaymentOrder.setToReceive(10000);
+		PaymentOrder.setToReceiveCurrency("CLP");
+		PaymentOrder.setPaymentReceiver("comercio@example.com"); // registrado en CryptoMKT
+		PaymentOrder.setExternalId("codigo-orden-interno-del-comercio");
+		PaymentOrder.setCallbackUrl("https://example.com/api/cryptomkt/notification");
+		PaymentOrder.setErrorUrl("https://example.com/cryptomkt/error");
+		PaymentOrder.setSuccessUrl("https://example.com/cryptomkt/thanks");
+		PaymentOrder.setRefundEmail("cliente@example.com"); // correo cliente por si hay un problema
 		try {
-			System.out.println(Client.getBalance());
+			Client.createPaymentOrder(PaymentOrder);
+			System.out.println(PaymentOrder.getPaymentUrl());
 		} catch (ClientException e) {
 			System.out.println(e.getMessage());
 		}
